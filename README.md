@@ -21,51 +21,46 @@ with use of any Git client, or download it as a [Zip file](https://github.com/gi
 
 Building the source code
 ------------------------
-We are using own build system to compile UE Viewer. You may find a Perl script in *Tools/genmake*. This script
-generates makefiles from some human-friendly project format. After that you may build generated makefile
-using 'nmake' for Visual Studio or 'make' for gcc. Build process is controlled with *build.sh* script.
+Мы используем собственную систему сборки для компиляции UE Viewer. Вы можете найти Perl-скрипт в *Tools/genmake*. Этот скрипт
+генерирует make-файлы проекта. После этого вы можете собрать сгенерированный make-файл
+используя 'nmake' для Visual Studio или 'make' для gcc. Процесс сборки контролируется скриптом *build.sh*.
 
 ### build.sh options
-To list all options, run `build.sh --help`. Current options are:
-- `--64` compile for Windows 64bit
-- `--debug` make a debug version of executable
-- `--vc <version>` specify which Visual Studio version should be used for compilation, default is latest compiler
-  installed on your system
+Чтобы просмотреть все параметры, запустите `build.sh --help`. Текущие варианты:
+- `--64` скомпилировать для Windows 64bit
+- `--debug` сделать отладочную версию исполняемого файла
+- `--vc <version>` указывает, какую версию Visual Studio следует использовать для компиляции, по умолчанию это самый
+  последний компилятор, установленный в вашей системе
 
-Please note that `build.sh` is not just a shortcut for calling `make -f <makefile>`, it performs more actions.
-It does:
-- Generating a makefile for current platform.
-- Making `UModelTool/Version.h` file which contains current build number based on number of Git commits.
-- Preprocessing shaders (with executing `Unreal/Shaders/make.pl`).
-- It has the possibility to compile just a single cpp file from the project (used with Visual Studio Code Ctrl+F7 key).
+Обратите внимание, что `build.sh` - это не просто ярлык для вызова `make -f <makefile>`, он умеет выполнять больше действий.
+Дополнительные возможности:
+- Создание make-файла для текущей платформы.
+- Создание файла `UModelTool/Version.h`, который содержит текущий номер сборки, основанный на количестве коммитов Git.
+- Предварительная обработка шейдеров (с выполнением `Unreal/Shaders/make.pl`).
+- Он имеет возможность скомпилировать только один файл cpp из проекта (используется с Visual Studio Code Ctrl + клавиша F7).
 
 ### Windows 32-bit
 
-UE Viewer is compiled using Visual Studio. Required VisualStudio 2013 or newer. Older Visual Studio compilers are
-not suitable because viewer's code using some C++11 stuff.
+UE Viewer компилируется с использованием Visual Studio. Требуется VisualStudio 2013 или новее. Старые компиляторы Visual Studio не подходят, потому что код использует функции C++11.
 
-Currently build is performed with Visual C++ 2019.
+В настоящее время сборка выполняется с использованием Visual C ++ 2019.
 
-Build system utilizes GNU Tools for building, in particular - Bash and Perl. I've packaged Windows versions
-of these tools which was a part of [MinGW/MSYS project](http://www.mingw.org/). You can get everything what you need
-for a build [here](https://github.com/gildor2/BuildTools). This page contains **BuildTools**. You should
-download it and extract into some directory (press the green button "Clone or download", then "Download ZIP"). Let's say you
-extracted them to *C:\BuildTools*. After that, add *C:\BuildTools\bin* to the system's *PATH* environment variable. As an
-alternative it is possible to create a batch file which will temporarily modify *PATH* and then execute build script.
-Here's an example of such file:
+Система сборки использует GNU Tools для сборки, в частности - Bash и Perl. Версии для Windows были упакованы
+с использованием инструментов, которые были частью [проекта MinGW/MSYS] (http://www.mingw.org/). Вы можете получить все, что вам нужно
+для сборки [здесь](https://github.com/gildor2/BuildTools). Эта страница содержит **BuildTools**. Вам необходимо
+скачать проект и распаковать его любое удобное для вас место (нажмите зеленую кнопку «Клонировать или скачать», затем «Загрузить ZIP»). Например, вы извлекли их в *C:\BuildTools*. После этого добавьте *C:\BuildTools\bin* в системную переменную среды *PATH*. В качестве альтернативы можно создать командный файл, который будет временно изменять *PATH*, а затем выполнить скрипт сборки.
+Вот пример такого файла:
 
     @echo off
     set PATH=%PATH%;C:\BuildTools\bin
     bash build.sh
 
-To launch a build process without a batch, simply execute
+Чтобы запустить процесс сборки без пакета, просто запустите его.
 
     bash build.sh
 
 ### Windows 64-bit
-Despite we're providing only 32-but builds of UE Viewer, it is possible to compile it for 64-bit platform. To do that, you
-should change a variable in *build.sh*: *PLATFORM* should be changed from `vc-win32` to `vc-win64`. Also 64-bit build could
-be initiated with launching *build.sh --64*.
+Несмотря на то, что мы предоставляем только 32-битные сборки UE Viewer, его можно скомпилировать для 64-битной платформы. Для этого вам нужно изменить переменную в *build.sh*: *PLATFORM* необходимо изменить с `vc-win32` на `vc-win64`. Также 64-битная сборка может быть запущена с выполнением команды *build.sh --64*.
 
 ### Linux
 Linux system has the most of dependencies by default. You'll need to install the following development packages if they're
